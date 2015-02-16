@@ -1,5 +1,6 @@
 // +_Line - logo idea: it would be a line with a plus representing the core ui
 Posts = new Mongo.Collection("posts");
+var groundPosts = new Ground.Collection(Posts);
 
 if (Meteor.isClient) {
 
