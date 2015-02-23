@@ -1,12 +1,11 @@
 
-Posts = new Mongo.Collection("Posts");
-var groundPosts = new Ground.Collection(Posts);
-Users = new Mongo.Collection("Users");
-var groundUsers = new Ground.Collection(Users);
+  Posts = new Mongo.Collection("Posts");
+  Users = new Mongo.Collection("Users");
+  
 
 if (Meteor.isClient) {
-
-  Meteor.subscribe("Posts");
+  
+  Meteor.subscribe("postsStream");
 
   console.log('POSTS DATA = ' + Posts.find().fetch());
   console.log('USERS DATA = ' + Users.find().fetch());
@@ -71,16 +70,18 @@ Meteor.methods({
 
 if (Meteor.isServer) {
   
-  Meteor.publishComposite('postsSet', {
-    find: function () {
+  Meteor.call("fetchJSONData");
+
+  Meteor.publishComposite('postsStream', {
+    find: function() {
       return Posts.find({});
     },
-    find: function () {
+    find: function() {
       return Users.find({});
     }
   });
+  
   console.log('POSTS DATA = ' + Posts.find().fetch());
-  console.log('USERS DATA = ' + Users.find().fetch());
-    Meteor.call("fetchJSONData");
+  console.log('USERS DATA = ' + Users.find().fetch());    
 
 }

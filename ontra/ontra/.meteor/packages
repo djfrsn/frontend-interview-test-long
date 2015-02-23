@@ -6,6 +6,5 @@
 
 meteor-platform
 insecure
-ground:db
 http
 reywood:publish-composite
