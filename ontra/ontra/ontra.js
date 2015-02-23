@@ -27,12 +27,15 @@ if (Meteor.isClient) {
     }
   });
   
-  Template.body.helpers({
-    posts: function () {
-      return Posts.find({}); // Return all documents from Mongo "Posts" collection
+  Template.posts.helpers({
+    posts: function() {
+      return Posts.find();
+    },
+    users: function () {
+      return Users.find();
     }
   });
-
+  
 }
 
   
@@ -68,14 +71,13 @@ Meteor.methods({
 
 if (Meteor.isServer) {
   
-  Meteor.publish('posts', function(){
-
-    var self = this;
-
-    return Posts.find();
-
-    self.ready();
-    
+  Meteor.publishComposite('posts', {
+    find: function () {
+      return Posts.find({});
+    },
+    find: function () {
+      return Users.find({});
+    }
   });
 
   Meteor.startup(function () {
