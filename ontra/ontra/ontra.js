@@ -7,6 +7,9 @@ var groundUsers = new Ground.Collection(Users);
 if (Meteor.isClient) {
 
   Meteor.subscribe("Posts");
+
+  console.log('POSTS DATA = ' + Posts.find().fetch());
+  console.log('USERS DATA = ' + Users.find().fetch());
   
   Template.body.events({
     "submit .ontra": function (event) {    
@@ -27,12 +30,12 @@ if (Meteor.isClient) {
     }
   });
   
-  Template.posts.helpers({
+  Template.body.helpers({
     posts: function() {
-      return Posts.find().fetch();
+      return Posts.find();
     },
     users: function () {
-      return Users.find().fetch();
+      return Users.find();
     }
   });
   
@@ -76,9 +79,8 @@ if (Meteor.isServer) {
       return Users.find({});
     }
   });
-
-  Meteor.startup(function () {
+  console.log('POSTS DATA = ' + Posts.find().fetch());
+  console.log('USERS DATA = ' + Users.find().fetch());
     Meteor.call("fetchJSONData");
-  });
 
 }
