@@ -1,12 +1,12 @@
 
-Posts = new Mongo.Collection("posts");
+Posts = new Mongo.Collection("Posts");
 var groundPosts = new Ground.Collection(Posts);
-Users = new Mongo.Collection("users");
+Users = new Mongo.Collection("Users");
 var groundUsers = new Ground.Collection(Users);
 
 if (Meteor.isClient) {
 
-  Meteor.subscribe("posts");
+  Meteor.subscribe("Posts");
   
   Template.body.events({
     "submit .ontra": function (event) {    
@@ -29,10 +29,10 @@ if (Meteor.isClient) {
   
   Template.posts.helpers({
     posts: function() {
-      return Posts.find();
+      return Posts.find().fetch();
     },
     users: function () {
-      return Users.find();
+      return Users.find().fetch();
     }
   });
   
@@ -49,9 +49,6 @@ Meteor.methods({
     var postsData = JSON.parse(postsResponse.content);
 
     var usersData = JSON.parse(usersResponse.content);
-
-    console.log(postsData);
-    console.log(usersData);
 
     Posts.insert({
       postsData: postsData,
@@ -71,7 +68,7 @@ Meteor.methods({
 
 if (Meteor.isServer) {
   
-  Meteor.publishComposite('posts', {
+  Meteor.publishComposite('postsSet', {
     find: function () {
       return Posts.find({});
     },

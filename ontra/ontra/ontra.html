@@ -13,7 +13,7 @@
 			</form>
     </header>
     <ul>
-      {{#each posts}}
+      {{#each Posts}}
         {{> post}}
       {{/each}}
     </ul>
@@ -25,8 +25,9 @@
 <template name='post'>
 
   <li>
-    <span class="text">{{posts.content}}</span>
+    <span class="text">{{postsData.content}}</span>
     <span class="text">{{content}}</span>
+    <span class="text">{{usersData.username}}</span>
   </li> 
 
 </template>
