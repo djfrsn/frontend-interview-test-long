@@ -29,7 +29,7 @@ if (Meteor.isClient) {
   
   Template.body.helpers({
     posts: function () {
-      return Posts.find({}); // Return all documents from Mongo "Posts" collection
+      return Posts.find(); // Return all documents from Mongo "Posts" collection
     }
   });
 
@@ -75,5 +75,5 @@ if (Meteor.isServer) {
   Meteor.startup(function () {
     Meteor.call("fetchJSONData");
   });
-  
+
 }
