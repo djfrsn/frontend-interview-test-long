@@ -5,7 +5,8 @@ Users = new Mongo.Collection("users");
 var groundUsers = new Ground.Collection(Users);
 
 if (Meteor.isClient) {
-
+  Meteor.subscribe("posts");
+  
   Template.body.events({
     "submit .ontra": function (event) {    
     // This function is called when the new task form is submitted
@@ -13,8 +14,8 @@ if (Meteor.isClient) {
     var text = event.target.text.value;
 
     Posts.insert({
-      text: text,
-      createdAt: new Date() // current time
+      content: text,
+      date: new Date() // current time
     });
 
     // Clear Form
@@ -28,7 +29,7 @@ if (Meteor.isClient) {
   Template.body.helpers({
   
     posts: function () {
-      return Posts.find({}, {sort: {createdAt: -1}}); // Return all documents from Mongo "Task" collection
+      return Posts.find({}); // Return all documents from Mongo "Task" collection
     }
   });
 
@@ -44,24 +45,26 @@ if (Meteor.isClient) {
 
 }
 
-  HTTP.get(Meteor.absoluteUrl("posts.json"), function(err, result) {
-    console.log(result.data + " awesome");
-    Posts.insert({
-      content: result.data,
-      createdAt: new Date() // current time
-    });
-  });
-  HTTP.get(Meteor.absoluteUrl("users.json"), function(err, result) {
-    console.log(result.data + " awesome");
-    Users.insert({
-      content: result.data,
-      createdAt: new Date() // current time
-    });
-  });
+  
 
+Meteor.methods({
+  'fetchJSONData': function() {
+    
+
+    var postsResponse = Meteor.http.call("GET","https://raw.githubusercontent.com/djfrsn/frontend-interview-test-long/master/codetest/data/posts.json");
+    var usersResponse = Meteor.http.call("GET","https://raw.githubusercontent.com/djfrsn/frontend-interview-test-long/master/codetest/data/users.json");
+    console.log(postsResponse);
+    console.log(usersResponse);
+}
+});
+
+
+Meteor.publish('posts', function(){
+  return Posts.find();
+});
 
 if (Meteor.isServer) {
   Meteor.startup(function () {
-    // code to run on server at startup
+    Meteor.call("fetchJSONData");
   });
 }
