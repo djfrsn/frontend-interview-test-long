@@ -32,9 +32,12 @@ if (Meteor.isClient) {
   Template.body.helpers({
     posts: function() {
       return Posts.find();
-    },
-    users: function () {
-      return Users.find();
+    }
+  });
+
+  Template.post.helpers({
+    username: function() {
+      return Users.findOne({_id: this.userId}).username;
     }
   });
   
@@ -51,6 +54,25 @@ Meteor.methods({
     var postsData = JSON.parse(postsResponse.content);
 
     var usersData = JSON.parse(usersResponse.content);
+
+    postsData.forEach(function (post) {
+
+      post.date = new Date()
+      post.comments.date = new Date()
+      post._id = String(post.id)
+      delete post.id
+      post.userId = string(post.userId)
+      Posts.insert(post)
+    });
+
+    usersData.forEach(function (user) {
+
+      user.date = new Date()
+      user._id = String(user.id)
+      delete user.id
+      Users.insert(user)
+    });
+
 
     Posts.insert({
       postsData: postsData,
