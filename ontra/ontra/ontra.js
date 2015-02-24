@@ -1,5 +1,5 @@
 
-  Posts = new Mongo.Collection("Posts");
+  Posts = new Mongo.Collection("posts");
   Users = new Mongo.Collection("Users");
   
 
@@ -7,9 +7,6 @@ if (Meteor.isClient) {
   
   Meteor.subscribe("postsStream");
 
-  console.log('POSTS DATA = ' + Posts.find().fetch());
-  console.log('USERS DATA = ' + Users.find().fetch());
-  
   Template.body.events({
     "submit .ontra": function (event) {    
     // This function is called when the new task form is submitted
@@ -37,7 +34,8 @@ if (Meteor.isClient) {
 
   Template.post.helpers({
     username: function() {
-      return Users.findOne({_id: this.userId}).username;
+      var users = Users.findOne({_id: this.userId});
+      return users && users.username
     }
   });
   
@@ -61,7 +59,7 @@ Meteor.methods({
       post.comments.date = new Date()
       post._id = String(post.id)
       delete post.id
-      post.userId = string(post.userId)
+      post.userId = String(post.userId)
       Posts.insert(post)
     });
 
