@@ -73,17 +73,6 @@ Meteor.methods({
       Users.insert(user)
     });
 
-
-    Posts.insert({
-      postsData: postsData,
-      date: new Date() // current time
-    });
-
-    Users.insert({
-      usersData: usersData,
-      date: new Date() // current time
-    });
-
   }
 });
 
@@ -95,9 +84,15 @@ if (Meteor.isServer) {
     find: function() {
       return Posts.find({});
     },
-    find: function() {
-      return Users.find({});
-    }
+    children: [
+      {
+        find: function (post) {
+          console.log("%j", post.userId);
+          console.log("%j", Users.findOne({ _id: post.userId }));
+          return Users.find({ _id: post.userId });
+        }
+      }
+    ]
   });
 
   Meteor.startup(function () {
@@ -106,7 +101,7 @@ if (Meteor.isServer) {
     }
   });
   
-  console.log('POSTS DATA = ' + Posts.find().fetch());
-  console.log('USERS DATA = ' + Users.find().fetch());    
+  console.log('POSTS DATA = %j', Posts.find().fetch());
+  console.log('USERS DATA = %j', Users.find().fetch());
 
 }
