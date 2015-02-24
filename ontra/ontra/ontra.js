@@ -5,7 +5,7 @@
 
 if (Meteor.isClient) {
   
-  Meteor.subscribe("postsStream");
+  Meteor.subscribe("postsStream")
 
   Template.body.events({
     "submit .ontra": function (event) {    
