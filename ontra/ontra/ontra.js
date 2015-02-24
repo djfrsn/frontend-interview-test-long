@@ -1,7 +1,8 @@
 
   Posts = new Mongo.Collection("Posts")
+  Ground.Collection(Posts)
   Users = new Mongo.Collection("Users")
-  
+  Ground.Collection(Users)
 
 if (Meteor.isClient) {
   
