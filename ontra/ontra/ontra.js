@@ -67,10 +67,7 @@ Meteor.methods({
 
 
 
-
 if (Meteor.isServer) {
-  
-  Meteor.call("fetchJSONData");
 
   Meteor.publishComposite('postsStream', {
     find: function() {
@@ -78,6 +75,12 @@ if (Meteor.isServer) {
     },
     find: function() {
       return Users.find({});
+    }
+  });
+
+  Meteor.startup(function () {
+    if (Posts.find().count() === 0) {
+      Meteor.call("fetchJSONData");
     }
   });
   
