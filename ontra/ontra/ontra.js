@@ -1,6 +1,6 @@
 
-  Posts = new Mongo.Collection("posts");
-  Users = new Mongo.Collection("Users");
+  Posts = new Mongo.Collection("posts")
+  Users = new Mongo.Collection("Users")
   
 
 if (Meteor.isClient) {
@@ -19,7 +19,7 @@ if (Meteor.isClient) {
     });
 
     // Clear Form
-    event.target.text.value = "";
+    event.target.text.value = ""
 
     // Prevent default form submit
     return false
@@ -28,13 +28,13 @@ if (Meteor.isClient) {
   
   Template.body.helpers({
     posts: function() {
-      return Posts.find();
+      return Posts.find()
     }
   });
 
   Template.post.helpers({
     username: function() {
-      var users = Users.findOne({_id: this.userId});
+      var users = Users.findOne({_id: this.userId})
       return users && users.username
     }
   });
@@ -80,14 +80,14 @@ if (Meteor.isServer) {
 
   Meteor.publishComposite('postsStream', {
     find: function() {
-      return Posts.find({});
+      return Posts.find({})
     },
     children: [
       {
         find: function (post) {
-          console.log("%j", post.userId);
-          console.log("%j", Users.findOne({ _id: post.userId }));
-          return Users.find({ _id: post.userId });
+          console.log("%j", post.userId)
+          console.log("%j", Users.findOne({ _id: post.userId }))
+          return Users.find({ _id: post.userId })
         }
       }
     ]
@@ -95,11 +95,11 @@ if (Meteor.isServer) {
 
   Meteor.startup(function () {
     if (Posts.find().count() === 0) {
-      Meteor.call("fetchJSONData");
+      Meteor.call("fetchJSONData")
     }
   });
   
-  console.log('POSTS DATA = %j', Posts.find().fetch());
-  console.log('USERS DATA = %j', Users.find().fetch());
+  console.log('POSTS DATA = %j', Posts.find().fetch())
+  console.log('USERS DATA = %j', Users.find().fetch())
 
 }
