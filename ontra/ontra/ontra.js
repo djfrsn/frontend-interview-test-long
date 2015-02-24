@@ -1,5 +1,5 @@
 
-  Posts = new Mongo.Collection("posts")
+  Posts = new Mongo.Collection("Posts")
   Users = new Mongo.Collection("Users")
   
 
